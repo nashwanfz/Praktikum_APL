@@ -10,7 +10,7 @@ struct Genre {
 
 int main() {
     int attempt = 0;
-    const int max_attempt = 5;
+    const int max_attempt = 3;
     string Admin_User = "Nashwan";
     string Admin_Pass = "125";
     string Guest_User = "Guest";
@@ -152,7 +152,7 @@ int main() {
             if (Pilihan == "y") {
                 cout << endl;
             } else {
-                cout << "Terima Kasih telah memakai Dictionary ini" << endl;
+                cout << "Terima Kasih telah memakai Program ini" << endl;
                 break;
             }
         } else {
