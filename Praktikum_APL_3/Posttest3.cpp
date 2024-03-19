@@ -91,7 +91,7 @@ int main() {
         return 1; // Keluar jika gagal login
     }
 
-    const int numGenres = 5;
+    int numGenres = 5; // Jumlah genre awal
     Genre genres[numGenres] = {
         {"FPS", {"Call Of Duty", "CS:GO", "Valorant"}},
         {"RPG", {"Elden Ring", "The Witcher", "Minecraft"}},
@@ -122,25 +122,116 @@ int main() {
                 break;
             case 2:
                 if (status == "admin") {
-                    // Tambahkan logika untuk menambahkan data
+                    string genre_name;
+                    cout << "Masukkan nama genre: ";
+                    cin >> genre_name;
+
+                    // Cari apakah genre sudah ada
+                    bool genre_exists = false;
+                    for (int i = 0; i < numGenres; ++i) {
+                        if (genres[i].name == genre_name) {
+                            genre_exists = true;
+                            break;
+                        }
+                    }
+
+                    if (genre_exists) {
+                        string game_name;
+                        cout << "Masukkan nama game yang ingin ditambahkan: ";
+                        cin >> game_name;
+
+                        // Tambahkan game ke genre yang sesuai
+                        for (int i = 0; i < numGenres; ++i) {
+                            if (genres[i].name == genre_name) {
+                                genres[i].games.push_back(game_name);
+                                cout << "Game berhasil ditambahkan ke genre " << genre_name << endl;
+                                break;
+                            }
+                        }
+                    } else {
+                        cout << "Genre tidak ditemukan." << endl;
+                    }
                 } else {
                     cout << "Anda tidak memiliki akses untuk menambahkan data." << endl;
                 }
                 break;
             case 3:
                 if (status == "admin") {
-                    // Tambahkan logika untuk mengubah data
+                    string genre_name;
+                    cout << "Masukkan nama genre yang ingin diubah: ";
+                    cin >> genre_name;
+
+                    // Cari apakah genre sudah ada
+                    bool genre_found = false;
+                    for (int i = 0; i < numGenres; ++i) {
+                        if (genres[i].name == genre_name) {
+                            genre_found = true;
+
+                            string game_name;
+                            cout << "Masukkan nama game yang ingin diubah: ";
+                            cin >> game_name;
+
+                            // Cari apakah game ada dalam genre tersebut
+                            bool game_found = false;
+                            for (int j = 0; j < genres[i].games.size(); ++j) {
+                                if (genres[i].games[j] == game_name) {
+                                    game_found = true;
+
+                                    string new_game_name;
+                                    cout << "Masukkan nama baru game: ";
+                                    cin >> new_game_name;
+
+                                    // Ubah nama game
+                                    genres[i].games[j] = new_game_name;
+                                    cout << "Game berhasil diubah." << endl;
+                                    break;
+                                }
+                            }
+
+                            if (!game_found) {
+                                cout << "Game tidak ditemukan dalam genre tersebut." << endl;
+                            }
+
+                            break;
+                        }
+                    }
+
+                    if (!genre_found) {
+                        cout << "Genre tidak ditemukan." << endl;
+                    }
                 } else {
                     cout << "Anda tidak memiliki akses untuk mengubah data." << endl;
                 }
                 break;
             case 4:
-                                if (status == "admin") {
-                    // Tambahkan logika untuk menghapus data
+                if (status == "admin") {
+                    string genre_name;
+                    cout << "Masukkan nama genre yang ingin dihapus: ";
+                    cin >> genre_name;
+
+                    // Cari apakah genre sudah ada
+                    bool genre_found = false;
+                    for (int i = 0; i < numGenres; ++i) {
+                        if (genres[i].name == genre_name) {
+                            genre_found = true;
+
+                            // Hapus genre dan game yang sesuai
+                            for (int j = i; j < numGenres - 1; ++j) {
+                                genres[j] = genres[j + 1];
+                            }
+                            numGenres--;
+
+                            cout << "Genre dan game yang terkait berhasil dihapus." << endl;
+                            break;
+                        }
+                    }
+
+                    if (!genre_found) {
+                        cout << "Genre tidak ditemukan." << endl;
+                    }
                 } else {
                     cout << "Anda tidak memiliki akses untuk menghapus data." << endl;
                 }
-
                 break;
             case 5:
                 if (status == "guest" || status == "admin") {
@@ -150,28 +241,25 @@ int main() {
                 }
                 break;
             case 6:
-    if (status == "admin") {
-        cout << "Anda Telah Log Out" << endl;
-        cout << "Apakah Anda ingin keluar dari program (y/n) atau login sebagai guest (g)? ";
-        char logout_choice;
-        cin >> logout_choice;
-        if (logout_choice == 'y' || logout_choice == 'Y') {
-            return 0; // Keluar dari program
-        } else if (logout_choice == 'g' || logout_choice == 'G') {
-            status = "guest"; // Set status menjadi guest
-            cout << "Anda Telah Log In sebagai Guest" << endl;
-        } else {
-            cout << "Pilihan tidak valid, Anda tetap masuk sebagai admin." << endl;
-        }
-    } else if (status == "guest") {
-        cout << "Anda Telah Log Out" << endl;
-        return 0; // Keluar dari program
-    }
-    break;
-
+                if (status == "admin" || status == "guest") {
+                    cout << "Anda Telah Log Out" << endl;
+                    cout << "Apakah Anda ingin keluar dari program (y/n) atau login sebagai guest (g)? ";
+                    char logout_choice;
+                    cin >> logout_choice;
+                    if (logout_choice == 'y' || logout_choice == 'Y') {
+                        return 0; // Keluar dari program
+                    } else if (logout_choice == 'g' || logout_choice == 'G') {
+                        status = "guest"; // Set status menjadi guest
+                        cout << "Anda Telah Log In sebagai Guest" << endl;
+                    } else {
+                        cout << "Pilihan tidak valid, Anda tetap masuk sebagai admin." << endl;
+                    }
+                }
+                break;
+            default:
+                cout << "Pilihan tidak valid." << endl;
         }
     }
 
     return 0;
 }
-
